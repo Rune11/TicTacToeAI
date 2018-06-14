@@ -7,6 +7,11 @@ namespace Field
     {
         List<List<int>> _field;
         int _size;
+
+        /// <summary>
+        /// Constructor for the playfield.
+        /// </summary>
+        /// <param name="size">Size of the field</param>
         Field(int size)
         {
             _size = size;
@@ -35,7 +40,7 @@ namespace Field
         }
 
         /// <summary>
-        /// 
+        /// Expands the playing field (eg. 3x3 -> 5x5).
         /// </summary>
         public void Expand()
         {
