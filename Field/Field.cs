@@ -7,6 +7,7 @@ namespace Field
     {
         List<List<int>> _field;
         int _size;
+        bool _player;
 
         /// <summary>
         /// Constructor for the playfield.
@@ -26,6 +27,7 @@ namespace Field
             }
         }
 
+        #region Getters
         /// <summary>
         /// Gets the value of the [x,y] position in the playfield.
         /// </summary>
@@ -40,8 +42,23 @@ namespace Field
         }
 
         /// <summary>
+        /// Getter for the size attribue of the Field.
+        /// </summary>
+        public int Size { get { return _size; } }
+
+        /// <summary>
+        /// Getter for the active player. True is player1, False is player2.
+        /// </summary>
+        public bool Player { get { return _player; } }
+
+        #endregion
+
+        /// <summary>
         /// Expands the playing field (eg. 3x3 -> 5x5).
         /// </summary>
+        /// 
+
+        #region public functions
         public void Expand()
         {
             var newSize = _size + 2;
@@ -68,5 +85,41 @@ namespace Field
             _size = newSize;
             _field = newField;
         }
+
+        /// <summary>
+        /// Active player makes a step, in the [x,y] position.
+        /// </summary>
+        /// <param name="x">X coord</param>
+        /// <param name="y">Y coord</param>
+        public void Step(int x, int y)
+        {
+            if (x >= 0 && y >= 0 && x < _size && y < _size)
+            {
+                if (_field[x][y] == 0)
+                {
+                    if (_player)
+                    {
+                        _field[x][y] = 1;
+                    }
+                    else
+                    {
+                        _field[x][y] = 2;
+                    }
+                    _player = !_player;
+                }
+                else
+                {
+                    throw new ArgumentException();
+                }
+
+            }
+            else
+            {
+                throw new ArgumentOutOfRangeException();
+            }
+                
+            
+        }
+        #endregion
     }
 }
