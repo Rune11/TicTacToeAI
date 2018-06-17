@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Field
+namespace GameModel
 {
     public class Field
     {
@@ -9,14 +9,19 @@ namespace Field
         int _size;
         bool _player;
 
+        int winner;
+
         #region Constructor
         /// <summary>
         /// Constructor for the playfield.
         /// </summary>
         /// <param name="size">Size of the field</param>
-        Field(int size)
+        public Field(int size)
         {
             _size = size;
+            _player = true;
+            winner = 0;
+            _field = new List<List<int>>();
             for (int i = 0; i < _size; i++)
             {
                 var list = new List<int>();
@@ -53,6 +58,8 @@ namespace Field
         /// </summary>
         public bool Player { get { return _player; } }
 
+        public int GetWinner() { return winner; }
+
         #endregion
 
         #region Public functions
@@ -71,7 +78,7 @@ namespace Field
                 var list = new List<int>();
                 for (int j = 0; j < newSize; j++)
                 {
-                    if (i == 0 || i == newSize - 1)
+                    if (i == 0 || i == newSize - 1 || j == 0 || j == newSize - 1)
                     {
                         list.Add(0);
                     }
@@ -106,8 +113,11 @@ namespace Field
                     {
                         _field[x][y] = 2;
                     }
-                    if (CheckWinCondition(x,y))
-                        //endgame
+                    if (CheckWinCondition(x, y))
+                    {
+                        GameEnded();
+                        return;
+                    }
                     _player = !_player;
                 }
                 else
@@ -187,6 +197,18 @@ namespace Field
                 return true;
             }
             return false;
+        }
+
+        private void GameEnded()
+        {
+            if (_player)
+            {
+                winner = 1;
+            }
+            else
+            {
+                winner = 2;
+            }
         }
         #endregion
     }
