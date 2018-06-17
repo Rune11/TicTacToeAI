@@ -9,6 +9,7 @@ namespace Field
         int _size;
         bool _player;
 
+        #region Constructor
         /// <summary>
         /// Constructor for the playfield.
         /// </summary>
@@ -26,6 +27,7 @@ namespace Field
                 _field.Add(list);
             }
         }
+        #endregion
 
         #region Getters
         /// <summary>
@@ -44,7 +46,7 @@ namespace Field
         /// <summary>
         /// Getter for the size attribue of the Field.
         /// </summary>
-        public int Size { get { return _size; } }
+        public int Size { get { return _size; } set { _size = value; } }
 
         /// <summary>
         /// Getter for the active player. True is player1, False is player2.
@@ -53,12 +55,11 @@ namespace Field
 
         #endregion
 
+        #region Public functions
         /// <summary>
         /// Expands the playing field (eg. 3x3 -> 5x5).
         /// </summary>
         /// 
-
-        #region public functions
         public void Expand()
         {
             var newSize = _size + 2;
@@ -105,6 +106,8 @@ namespace Field
                     {
                         _field[x][y] = 2;
                     }
+                    if (CheckWinCondition(x,y))
+                        //endgame
                     _player = !_player;
                 }
                 else
@@ -119,6 +122,71 @@ namespace Field
             }
                 
             
+        }
+        #endregion
+
+        #region Private functions
+
+        /// <summary>
+        /// Cheks if the active player have won the game with the latest step.
+        /// </summary>
+        /// <param name="x">X coord</param>
+        /// <param name="y">Y coord</param>
+        /// <returns>True if won, false otherwise</returns>
+        private bool CheckWinCondition(int x, int y)
+        {
+            bool row = CountConsecutive(x, y, 1, 0);
+            bool column = CountConsecutive(x, y, 0, 1);
+            bool diag1 = CountConsecutive(x, y, 1, 1);
+            bool diag2 = CountConsecutive(x, y, 1, -1);
+            return row || column || diag1 || diag2;
+        }
+
+        /// <summary>
+        /// Counts consecutive cells of active player, starting from the [x,y] postition, followig the [v,w] vector.
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="v"></param>
+        /// <param name="w"></param>
+        /// <returns>Returns true if the count is >= 5, false otherwise.</returns>
+        private bool CountConsecutive(int x, int y, int v, int w)
+        {
+            int num = 1; // number of consecutive matching cells
+            int a = x + v;
+            int b = y + w;
+            int p; // active player's number
+            if (_player)
+            {
+                p = 1;
+            }
+            else
+            {
+                p = 2;
+            }
+            while (a >= 0 && a < _size && b >= 0 && b < _size && _field[a][b] == p)
+            {
+                num++;
+                a += v;
+                b += w;
+            }
+            if (num >= 5)
+            {
+                return true;
+            }
+            a = x - v;
+            b = y - w;
+            while (a >= 0 && a < _size && b >= 0 && b < _size && _field[a][b] == p)
+            {
+                num++;
+                a -= v;
+                b -= w;
+            }
+            if (num >= 5)
+            {
+                return true;
+            }
+            return false;
         }
         #endregion
     }
