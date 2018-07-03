@@ -32,6 +32,24 @@ namespace GameModel
                 _field.Add(list);
             }
         }
+
+        public Field(Field field)
+        {
+            _size = field.Size;
+            _player = field.Player;
+            winner = field.GetWinner();
+
+            _field = new List<List<int>>();
+            for (int i = 0; i < _size; i++)
+            {
+                var list = new List<int>();
+                for (int j = 0; j < _size; j++)
+                {
+                    list.Add(field.GetValue(i,j));
+                }
+                _field.Add(list);
+            }
+        }
         #endregion
 
         #region Getters

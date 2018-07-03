@@ -15,18 +15,7 @@ namespace TicTacToeConsole
         {
             field = new Field(3);
             size = field.Size;
-            Console.WriteLine("Field size = " + size);
-            WriteField();
-            field.Step(0, 0);
-            WriteField();
-            field.Step(0, 1);
-            WriteField();
-            field.Step(1,1);
-            WriteField();
-            field.Expand();
-            size = field.Size;
-            field.Step(0, 0);
-            WriteField();
+            
 
             Console.ReadLine();
 
