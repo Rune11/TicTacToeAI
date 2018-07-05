@@ -25,6 +25,22 @@ namespace AI
 
         }
 
+        private int ComputeValue(Field f)
+        {
+            int value = 0;
+            //setting active player
+            int player = 2;
+            if (f.Player)
+            {
+                player = 1;
+            }
+
+            //value += ComputeRowValue(player);
+            //value += ComputeColumnValue(player);
+
+            return value;
+        }
+
         private void BuildTree()
         {
             for (int i = 0; i < _field.Size; i++)
@@ -35,7 +51,8 @@ namespace AI
                     {
                         Field f = new Field(_field);
                         f.Step(i, j);
-                        tree.AddChild(f);
+                        int value = ComputeValue(f);
+                        tree.AddChild(f, 0);
                     }
                 }
             }
